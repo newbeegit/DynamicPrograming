@@ -84,14 +84,45 @@ public class DynamicProgramming {
 	 * @return
 	 */
 	public static String stringAlignment(String x, String y){
-		String minCost="";
+
+		StringBuilder result = new StringBuilder(y);
+		String resultString = y;
+		int n = x.length();
+		int m = y.length();
+		
+		int preCost = 0;
+		int index =0;
 		if(x.length()==y.length()){
-			minCost = x;
+			resultString = x;
 		}
 		else{
-			
+			for (int i = 0; i < n - m; i++) {
+				for (int j = 0; j <= resultString.length(); j++) {
+					StringBuilder str = new StringBuilder(resultString);
+					str.insert(j, '$');
+					String tmpStr = str.toString();
+
+					int costValue = 0;
+					for (int k = 0; k < tmpStr.length(); k++) {
+						costValue += cost(x.charAt(k), tmpStr.charAt(k));
+					}
+					if(j==0){
+						preCost = costValue;
+						index =j;
+					}
+					else if(costValue < preCost) {
+						preCost = costValue;
+						index =j;
+					}
+
+				}
+				//System.out.println("index: "+index);
+				result.insert(index, '$');
+				resultString = result.toString();
+			}
 		}
-		return minCost;
+		
+		return resultString;
 	}
 	
 	
@@ -104,5 +135,16 @@ public class DynamicProgramming {
 			result = 2;
 		}
 		return result;
+	}
+
+
+	public static void main(String args[]) {
+
+		int[][] test = { { 9, 3, 6, 2, 2 }, { 8, 4, 3, 6, 1 }, { 11, 4, 8, 9, 3 } };
+
+		ArrayList<Integer> testList = new ArrayList<Integer>();
+		testList = minCostVC(test);
+		System.out.println(testList.toString());
+		System.out.println(stringAlignment("absccwats","awat"));
 	}
 }
