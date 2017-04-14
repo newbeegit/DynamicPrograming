@@ -28,9 +28,18 @@ public class DynamicProgramming {
 				}
 			}
 		}
+		//for debug
+		for(int i=0;i<M.length;i++){
+			for(int j=0;j<M[0].length;j++){
+				
+					System.out.println("row: "+i+" col: "+j+" "+M[i][j]);
+				
+			}
+		}
+		
 		//get minVC column of start point 
 		int StartCol =0; 
-		for(int i=0;i<M.length;i++){
+		for(int i=0;i<M[0].length;i++){
 			if(tmp[0][i]<tmp[0][StartCol]){
 				StartCol = i;
 			}
@@ -51,7 +60,7 @@ public class DynamicProgramming {
 				}
 			}
 			//right boundary
-			else if(StartCol== (tmp.length-1)){
+			else if(StartCol== (tmp[0].length-1)){
 				if(tmp[i][StartCol] < tmp[i][StartCol-1]){
 					result.add(i);
 					result.add(StartCol);
@@ -145,6 +154,7 @@ public class DynamicProgramming {
 		ArrayList<Integer> testList = new ArrayList<Integer>();
 		testList = minCostVC(test);
 		System.out.println(testList.toString());
+		
 		System.out.println(stringAlignment("absccwats","awat"));
 	}
 }
