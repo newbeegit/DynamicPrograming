@@ -60,7 +60,7 @@ public class ImageProcessor {
 			Color[][] newPic = new Color[H][W-1];
 			for(int j=0;j<reducePixels.size()/2;j++){ 
 				int delete= reducePixels.get(2*j+1);
-				System.out.println("delete pixel: "+ j + " "+ delete);
+				//System.out.println("delete pixel: "+ j + " "+ delete);
 				for(int k=0;k<W-1;k++){
 					if(k<delete){
 						//Color tmpColor = OriginalPic[j][k];
@@ -77,7 +77,14 @@ public class ImageProcessor {
 				}
 			}
 			OriginalPic = new Color[H][W-1];
-			OriginalPic = newPic;
+			//OriginalPic = newPic;
+			
+			for(int row=0;row<newPic.length;row++){
+				for(int col=0;col<newPic[0].length;col++){
+					//Pixel[x; y] refers to the pixel in xth column and yth row
+					OriginalPic[row][col] = newPic[row][col];
+				}
+			}
 			W = W-1;
 		}
 		
