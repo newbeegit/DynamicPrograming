@@ -1,6 +1,11 @@
 import java.awt.Color;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author sc922
+ *
+ */
 public class ImageProcessor {
 
 	Picture picture, output;
@@ -8,8 +13,11 @@ public class ImageProcessor {
 	Color[][] OriginalPic;
 	
 	/**
+	 * W to denote the width and H to denote the height of the
+     * input image. Generate a color matrix of the input image.
+     * Each color variable has a R, G, B value inside of it.
+	 * @param imageFile        A string holds the name the name of the image that will be manipulated
 	 * 
-	 * @param imageFile
 	 */
 	public ImageProcessor(String imageFile){
 		picture = new Picture(imageFile);
@@ -26,9 +34,13 @@ public class ImageProcessor {
 	}
 	
 	/**
-	 * 
-	 * @param x
-	 * @return
+	 * Use the static method minCostVC to compute the
+	 *	vertical cut. Generate a image with a width equals to x times W. Therefore, the reduced time equals to W times(1-x).
+	 * For each reduce time, the minCost generate a minCost ArrayList contains the minCost path of the image.
+	 * For each reduce time, the color matrix has been reduced 1 pixel as the minCost path from each row of the matrix.
+	 * In the end, the reduced image has been generated.
+	 * @param x   A double variable will determine the width of output picture equals to [x × W].
+	 * @return Picture whose width is [x × W].
 	 */
 	public Picture reduceWidth(double x){
 		if(x>1){
@@ -80,13 +92,12 @@ public class ImageProcessor {
 	}
 	
 	
-	
-	
-	
 	/**
-	 * 
-	 * @param M
-	 * @return
+	 * Y importance equals to the distance from the M[i-1,j] to M[i+1,j].
+	 * If i = 0, then distance is from M[H-1,j] to M[i+1,j]
+	 * If i = H-1, then distance is from M[i-1,j] to M[0,j]
+	 * @param M   Input M is the color matrix.
+	 * @return return an important value matrix calculated by the input M.
 	 */
 	private int[][] YImportance(Color[][] M){
 		int height, width;
@@ -109,6 +120,12 @@ public class ImageProcessor {
 		return N;
 	}
 	
+	/**X importance equals to the distance from the M[i,j-1] to M[i,j+1].
+	 * If j = 0, then distance is from M[i,W-1] to M[i,j+1]
+	 * If j = W-1, then distance is from M[i,0] to M[i,j-1]
+	 * @param M  Input M is the color matrix.
+	 * @return  return an important value matrix calculated by the input M.
+	 */
 	private int[][] XImportance(Color[][] M){
 		int height, width;
 		height = M.length;
@@ -131,6 +148,11 @@ public class ImageProcessor {
 		return N;
 	}
 	
+	/**
+	 * Importance of vertex M[i,j] = X Importance of M[i,j] + Y Importance of M[i,j]
+	 * @param M  Input M is the color matrix.
+	 * @return   return an important value matrix calculated by the input M. Importance value = Ximportance + Yimportance
+	 */
 	private int[][] Importance(Color[][] M){
 		int height, width;
 		height = M.length;
@@ -146,6 +168,13 @@ public class ImageProcessor {
 		return result;
 	}
 	
+	/**
+	 * Calculate the distance from color p to color q. The calculation 
+	 * formula is Dist(p; q) = (r1 − r2)^2 + (g1 − g2)^2 + (b1 − b2)^2
+	 * @param p Input p is the first color valuable
+	 * @param q   Input q is the first color valuable
+	 * @return  The result distance from color p to color q.
+	 */
 	private int Dist(Color p, Color q){
 		int r = p.getRed() - q.getRed();
 		int g = p.getGreen() - q.getGreen();
@@ -154,6 +183,11 @@ public class ImageProcessor {
 		return result;
 	}
 	
+	
+	/**
+	 * Only for test
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		ImageProcessor image = new ImageProcessor("./Original.jpg");
 		//image.picture.show();
